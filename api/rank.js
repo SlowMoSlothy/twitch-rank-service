@@ -67,10 +67,10 @@ export default function handler(req, res) {
   const hours = parseWatchtime(watchtime);
 
   if (hours === null) {
-    return sendText(res, 200, `${user} [⚪ Unranked] – Watchtime: ${watchtime || '0 secs'} – Zeuros: ${points}`);
+    return sendText(res, 200, `${user} [⚪ Unranked] – Watchtime: ${watchtime || '0 secs'} – Points: ${points}`);
   }
 
-  const output = `${user} [${rankFor(hours)}] – Watchtime: ${watchtime} – Zeuros: ${points}`;
+  const output = `${user} [${rankFor(hours)}] – Watchtime: ${watchtime} – Points: ${points}`;
   return sendText(res, 200, output.slice(0, 380));
 }
 
