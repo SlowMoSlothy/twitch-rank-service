@@ -47,23 +47,29 @@ function clean(value, fallback = '') {
   return String(value ?? fallback).replace(/[\r\n]/g, ' ').trim();
 }
 
+function sendText(res, statusCode, text) {
+  res.statusCode = statusCode;
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.end(text);
+}
+
 export default function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
-    return res.status(405).type('text/plain').send('Only GET is supported.');
+    return sendText(res, 405, 'Only GET is supported.');
   }
 
-  const user = clean(req.query.user, 'Viewer');
-  const watchtime = clean(req.query.watchtime);
-  const points = clean(req.query.points, '0');
+  const user = clean(req.query?.user, 'Viewer');
+  const watchtime = clean(req.query?.watchtime);
+  const points = clean(req.query?.points, '0');
   const hours = parseWatchtime(watchtime);
 
   if (hours === null) {
-    return res.status(200).type('text/plain; charset=utf-8').send(`${user} [⚪ Unranked] – Watchtime: ${watchtime || '0 secs'} – Schokies: ${points}`);
+    return sendText(res, 200, `${user} [⚪ Unranked] – Watchtime: ${watchtime || '0 secs'} – Schokies: ${points}`);
   }
 
   const output = `${user} [${rankFor(hours)}] – Watchtime: ${watchtime} – Schokies: ${points}`;
-  return res.status(200).type('text/plain; charset=utf-8').send(output.slice(0, 380));
+  return sendText(res, 200, output.slice(0, 380));
 }
 
 export { parseWatchtime, rankFor };
