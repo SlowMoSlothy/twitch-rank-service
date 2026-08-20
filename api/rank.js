@@ -70,7 +70,7 @@ export default function handler(req, res) {
     return sendText(res, 200, `${user} [⚪ Unranked] – Watchtime: ${watchtime || '0 secs'} – Zeuros: ${points}`);
   }
 
-  const output = `${user} [${rankFor(hours)}] – Watchtime: ${watchtime} – Schokies: ${points}`;
+  const output = `${user} [${rankFor(hours)}] – Watchtime: ${watchtime} – Zeuros: ${points}`;
   return sendText(res, 200, output.slice(0, 380));
 }
 
