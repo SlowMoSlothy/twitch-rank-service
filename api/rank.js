@@ -1,14 +1,16 @@
 const RANKS = [
-  { hours: 1000, name: '👑 Legende' },
-  { hours: 600, name: '🔥 Elite' },
-  { hours: 350, name: '🔴 Großmeister' },
-  { hours: 200, name: '🟣 Meister' },
-  { hours: 100, name: '💎 Diamant' },
-  { hours: 50, name: '💠 Platin' },
-  { hours: 25, name: '🟡 Gold' },
-  { hours: 10, name: '⚪ Silber' },
-  { hours: 5, name: '🟤 Bronze' },
-  { hours: 0, name: '⚪ Unranked' },
+  { hours: 1800, name: '5. Dan (Großmeister)' },
+  { hours: 1000, name: '4. Dan (Hoher Meister)' },
+  { hours: 600, name: '3. Dan (Meister)' },
+  { hours: 350, name: '2. Dan (Veteran)' },
+  { hours: 200, name: '1. Dan (Kämpfer)' },
+  { hours: 135, name: '1st Kyū (Meisterschüler)' },
+  { hours: 100, name: '2nd Kyū (Veteranschüler)' },
+  { hours: 70, name: '3rd Kyū (Adept)' },
+  { hours: 45, name: '4th Kyū (Fortgeschrittener)' },
+  { hours: 25, name: '5th Kyū (Schüler)' },
+  { hours: 10, name: '6th Kyū (Novize)' },
+  { hours: 0, name: 'Unranked' },
 ];
 
 const UNIT_HOURS = {
