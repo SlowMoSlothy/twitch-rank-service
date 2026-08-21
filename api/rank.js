@@ -59,6 +59,13 @@ function formatHours(hours) {
   return Math.floor(Math.max(0, hours));
 }
 
+function formatPoints(value) {
+  const normalized = String(value ?? '0').replace(/[^0-9-]/g, '');
+  const points = Number.parseInt(normalized, 10);
+  if (!Number.isFinite(points)) return '0';
+  return points.toLocaleString('de-DE');
+}
+
 export default function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
@@ -72,8 +79,8 @@ export default function handler(req, res) {
   const hours = parsedHours ?? 0;
   const rank = rankFor(hours);
 
-  const output = `${user} – ${rank.rank} (${rank.title}) – Im Training: ${formatHours(hours)} h – Punkte: ${points}`;
+  const output = `${user} – ${rank.rank} (${rank.title}) – Im Training: ${formatHours(hours)} h – Punkte: ${formatPoints(points)}`;
   return sendText(res, 200, output.slice(0, 380));
 }
 
-export { parseWatchtime, rankFor, formatHours };
+export { parseWatchtime, rankFor, formatHours, formatPoints };
