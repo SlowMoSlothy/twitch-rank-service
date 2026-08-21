@@ -71,7 +71,7 @@ export default function handler(req, res) {
   const hours = parsedHours ?? 0;
   const rank = rankFor(hours);
 
-  const output = `[${rank.rank} - ${rank.title}] – Im Training: ${formatHours(hours)} Stunden – Punkte: ${points}`;
+  const output = `${rank.rank} (${rank.title}) – Im Training: ${formatHours(hours)} h – Punkte: ${points}`;
   return sendText(res, 200, output.slice(0, 380));
 }
 
