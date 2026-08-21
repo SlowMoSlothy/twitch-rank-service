@@ -65,13 +65,14 @@ export default function handler(req, res) {
     return sendText(res, 405, 'Only GET is supported.');
   }
 
+  const user = clean(req.query?.user, 'Viewer');
   const watchtime = clean(req.query?.watchtime);
   const points = clean(req.query?.points, '0');
   const parsedHours = parseWatchtime(watchtime);
   const hours = parsedHours ?? 0;
   const rank = rankFor(hours);
 
-  const output = `${rank.rank} (${rank.title}) – Im Training: ${formatHours(hours)} h – Punkte: ${points}`;
+  const output = `${user} – ${rank.rank} (${rank.title}) – Im Training: ${formatHours(hours)} h – Punkte: ${points}`;
   return sendText(res, 200, output.slice(0, 380));
 }
 
