@@ -1,16 +1,16 @@
 const RANKS = [
-  { hours: 1800, name: '5. Dan (Großmeister)' },
-  { hours: 1000, name: '4. Dan (Hoher Meister)' },
-  { hours: 600, name: '3. Dan (Meister)' },
-  { hours: 350, name: '2. Dan (Veteran)' },
-  { hours: 200, name: '1. Dan (Kämpfer)' },
-  { hours: 135, name: '1st Kyū (Meisterschüler)' },
-  { hours: 100, name: '2nd Kyū (Veteranschüler)' },
-  { hours: 70, name: '3rd Kyū (Adept)' },
-  { hours: 45, name: '4th Kyū (Fortgeschrittener)' },
-  { hours: 25, name: '5th Kyū (Schüler)' },
-  { hours: 10, name: '6th Kyū (Novize)' },
-  { hours: 0, name: 'Unranked' },
+  { hours: 1800, rank: '5. Dan', title: 'Großmeister' },
+  { hours: 1000, rank: '4. Dan', title: 'Hoher Meister' },
+  { hours: 600, rank: '3. Dan', title: 'Meister' },
+  { hours: 350, rank: '2. Dan', title: 'Veteran' },
+  { hours: 200, rank: '1. Dan', title: 'Kämpfer' },
+  { hours: 135, rank: '1st Kyū', title: 'Meisterschüler' },
+  { hours: 100, rank: '2nd Kyū', title: 'Veteranschüler' },
+  { hours: 70, rank: '3rd Kyū', title: 'Adept' },
+  { hours: 45, rank: '4th Kyū', title: 'Fortgeschrittener' },
+  { hours: 25, rank: '5th Kyū', title: 'Schüler' },
+  { hours: 10, rank: '6th Kyū', title: 'Novize' },
+  { hours: 0, rank: 'Agōkai', title: 'Mitglied' },
 ];
 
 const UNIT_HOURS = {
@@ -42,7 +42,7 @@ function parseWatchtime(value) {
 }
 
 function rankFor(hours) {
-  return RANKS.find((rank) => hours >= rank.hours).name;
+  return RANKS.find((entry) => hours >= entry.hours);
 }
 
 function clean(value, fallback = '') {
@@ -55,23 +55,24 @@ function sendText(res, statusCode, text) {
   res.end(text);
 }
 
+function formatHours(hours) {
+  return Math.floor(Math.max(0, hours));
+}
+
 export default function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return sendText(res, 405, 'Only GET is supported.');
   }
 
-  const user = clean(req.query?.user, 'Viewer');
   const watchtime = clean(req.query?.watchtime);
   const points = clean(req.query?.points, '0');
-  const hours = parseWatchtime(watchtime);
+  const parsedHours = parseWatchtime(watchtime);
+  const hours = parsedHours ?? 0;
+  const rank = rankFor(hours);
 
-  if (hours === null) {
-    return sendText(res, 200, `${user} [⚪ Unranked] – Watchtime: ${watchtime || '0 secs'} – Punkte: ${points}`);
-  }
-
-  const output = `${user} [${rankFor(hours)}] – Watchtime: ${watchtime} – Punkte: ${points}`;
+  const output = `[${rank.rank} - ${rank.title}] – Im Training: ${formatHours(hours)} Stunden – Punkte: ${points}`;
   return sendText(res, 200, output.slice(0, 380));
 }
 
-export { parseWatchtime, rankFor };
+export { parseWatchtime, rankFor, formatHours };
